@@ -292,43 +292,37 @@ export function calculateMap12(
   const nn = Number(n)
   const kk = Number(k)
 
-  let case10 = 0n
+    let case10 = 0n
 
-  if (n === 0n) {
+    if (n === 0n) {
     case10 = 1n % mod
-  } else {
+    } else {
+    const maxCount = Math.min(nn, kk)
+
     const dp = Array.from(
-      { length: Math.min(nn, kk) + 1 },
-      () => Array<bigint>(nn + 1).fill(0n),
+        { length: maxCount + 1 },
+        () => Array<bigint>(nn + 1).fill(0n),
     )
 
     dp[0][0] = 1n
 
     for (let part = 1; part <= nn; part++) {
-      for (
-        let count = 1;
-        count <= Math.min(part, kk);
-        count++
-      ) {
+        for (let count = 1; count <= maxCount; count++) {
         for (let sum = part; sum <= nn; sum++) {
-          dp[count][sum] =
+            dp[count][sum] =
             (
-              dp[count][sum] +
-              dp[count - 1][sum - part]
+                dp[count][sum] +
+                dp[count - 1][sum - part]
             ) % mod
         }
-      }
+        }
     }
 
-    for (
-      let count = 0;
-      count <= Math.min(nn, kk);
-      count++
-    ) {
-      case10 =
+    for (let count = 0; count <= maxCount; count++) {
+        case10 =
         (case10 + dp[count][nn]) % mod
     }
-  }
+    }
 
   /*
    * 11
